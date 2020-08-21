@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
-import { TextField, withStyles, NativeSelect, makeStyles, FormControl, Button, InputBase } from '@material-ui/core'
-import Icon from '@material-ui/core/Icon';
+import { TextField, withStyles, NativeSelect, makeStyles, FormControl, Button, InputBase, Grid } from '@material-ui/core'
 import SaveIcon from '@material-ui/icons/Save';
 import { useMutation } from '@apollo/client'
 import { ADD_BOOK, GET_BOOKS } from '../queries/queries'
 import AuthorSelectList from "./AuthorSelectList";
 const useStyles = makeStyles((theme) => ({
     root: {
-        '& .MuiTextField-root': {
+        '& .MuiTextField-root, .MuiInputBase-input': {
             margin: theme.spacing(1),
-            width: 200,
+            width: "300px",
             display: "block"
         }
     },
@@ -18,14 +17,31 @@ const useStyles = makeStyles((theme) => ({
     },
     margin: {
         margin: theme.spacing(1),
+        width: "300px!important",
     },
     saveBtn: {
         margin: theme.spacing(1),
-        width: 200,
+        width: 300,
         display: "inline-block",
         textAlign: "center",
-        padding: theme.spacing(2, 1)
-    }
+        padding: theme.spacing(2)
+    },
+    formContainer: {
+        width: "700px",
+        position: "fixed",
+        left: theme.spacing(3),
+        bottom: theme.spacing(2),
+        margin: theme.spacing(1),
+        padding: theme.spacing(1),
+        borderRadius: theme.spacing(1),
+        background: "#ffff"
+    },
+    fullWidth: {
+        width: "100%",
+    },
+    '.MuiNativeSelect-select': {
+        width: '400px!important',
+      },
 }));
 const BootstrapInput = withStyles((theme) => ({
     root: {
@@ -39,7 +55,7 @@ const BootstrapInput = withStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
         border: '1px solid #ced4da',
         fontSize: 16,
-        padding: '10px 26px 10px 12px',
+        padding: '10px 46px 10px 12px',
         transition: theme.transitions.create(['border-color', 'box-shadow']),
         // Use the system font instead of the default Roboto font.
         fontFamily: [
@@ -63,7 +79,7 @@ const BootstrapInput = withStyles((theme) => ({
 }))(InputBase);
 function AddBook() {
     const classes = useStyles();
-    const [addBook, { data }] = useMutation(ADD_BOOK);
+    const [addBook] = useMutation(ADD_BOOK);
     const [bookTitle, setBookTitle] = useState('');
     const [bookGenre, setBookGenre] = useState('');
     const [bookAuthor, setBookAuthor] = useState('');
@@ -88,59 +104,88 @@ function AddBook() {
         setBookAuthor(e.target.value)
     }
     return (
-        <form className={classes.root} onSubmit={e => submitForm(e)}>
-            <TextField
-                label="Book Title"
-                variant="outlined"
-                size="small"
-                id="book-title"
-                value={bookTitle}
-                required
-                type="text"
-                onChange={(e) => setBookTitle(e.target.value)}
-            />
-            <TextField
-                label="Genre"
-                variant="outlined"
-                size="small"
-                id="book-genre"
-                value={bookGenre}
-                name="book-genre"
-                type="text"
-                required
-                onChange={(e) => setBookGenre(e.target.value)}
-            />
+        <div className={classes.formContainer}>
+            <form className={classes.root} onSubmit={e => submitForm(e)}>
+                <Grid container>
+                    <Grid item xs={6}>
+                        <TextField
+                            className={classes.textField}
+                            label="Book Title"
+                            variant="outlined"
+                            
+                            id="book-title"
+                            value={bookTitle}
+                            required
+                            type="text"
+                            onChange={(e) => setBookTitle(e.target.value)}
+                        />
 
 
-            <FormControl size="small" className={classes.margin}>
-                {/* <InputLabel htmlFor="book-author" >Author</InputLabel> */}
-                <NativeSelect
-                    className={classes.label}
-                    label="Author"
-                    required
 
-                    // id="book-author"
-                    value={bookAuthor}
-                    name="book-author"
-                    onChange={handleAuthorChange}
-                    input={<BootstrapInput />}
-                >
-                    <option aria-label="None" value="">Select Author</option>
-                    <AuthorSelectList />
-                </NativeSelect>
-            </FormControl>
-            <br/>
-            <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                className={classes.saveBtn}
-                endIcon={<SaveIcon />}
-                type="submit"
-            >
-                Save
-            </Button>
-        </form>
+
+                    </Grid>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth className={classes.margin}>
+                            {/* <InputLabel htmlFor="book-author" >Author</InputLabel> */}
+                            <NativeSelect
+                                className={classes.label}
+                                label="Author"
+                                required
+
+                                // id="book-author"
+                                value={bookAuthor}
+                                name="book-author"
+                                onChange={handleAuthorChange}
+                                input={<BootstrapInput />}
+                            >
+                                <option aria-label="None" value="">Select Author</option>
+                                <AuthorSelectList />
+                            </NativeSelect>
+                        </FormControl>
+
+
+                    </Grid>
+
+                </Grid>
+                <Grid container>
+                    <Grid item xs={6}>
+
+                        <FormControl fullWidth>
+                            <TextField
+                                label="Genre"
+                                variant="outlined"
+                                id="book-genre"
+                                value={bookGenre}
+                                name="book-genre"
+                                type="text"
+                                required
+                                onChange={(e) => setBookGenre(e.target.value)}
+                            />
+                        </FormControl>
+
+
+
+                    </Grid>
+                    <Grid item xs={6}>
+
+                        <br />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            className={classes.saveBtn}
+                            endIcon={<SaveIcon />}
+                            type="submit"
+                        >
+                            Save
+                    </Button>
+
+                    </Grid>
+
+                </Grid>
+            </form>
+
+        </div>
     )
 }
 

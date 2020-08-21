@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use('/graphql', graphqlHTTP({
     schema,
-    graphiql: true
+    graphiql: true 
 }))
 app.get("/", (req, res) => {
   res.send('Welcome to Book Store api please proceed to <a href="/graphql">API</a> to make queries ')

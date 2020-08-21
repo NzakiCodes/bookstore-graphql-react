@@ -6,9 +6,9 @@ const Book = ({ id }) => {
     const { loading, error, data } = useQuery(GET_BOOK, {
         variables: { id }
     });
-
+    const errors =[];
     if (loading) return <p>Loading...</p>;
-    // if (error) return <p style={{ color: "red" }}>Error: {error.message}</p>
+    if (error) errors.push(error)
     if (data) {
         return (
             <div>
