@@ -9,7 +9,8 @@
 ### Backend: 
 - Node.js 
 - Express.js
-- GraphQL 
+- GraphQL
+_ Mongoose
 
 ### Database:
 - MongoDB
